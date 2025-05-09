@@ -60,7 +60,7 @@ export default function protectedRoute(provider?: McpAuthProvider) {
     } = {
       jwksUri: `${issuerBase}/oauth2/jwks`,
       options: {
-        audience: provider?.clientId,
+        audience: provider?.audience,
         clockTolerance: 60,
         issuer: `${issuerBase}/oauth2/token`,
       },

@@ -43,9 +43,6 @@ export default async function validateAccessToken(
   if (!issuer || typeof issuer !== 'string') {
     throw new Error('Issuer must be a non-empty string in options.');
   }
-  if (!audience || (typeof audience !== 'string' && !Array.isArray(audience))) {
-    throw new Error('Audience must be a non-empty string or array of strings in options.');
-  }
 
   const JWKS: ReturnType<typeof createRemoteJWKSet> = createRemoteJWKSet(jwksUrl);
 

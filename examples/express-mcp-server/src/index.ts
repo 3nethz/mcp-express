@@ -17,8 +17,6 @@ app.use(
       {
         baseUrl: process.env.BASE_URL as string,
         issuer: process.env.ISSUER,
-        clientId: process.env.CLIENT_ID || '',
-        clientSecret: process.env.CLIENT_SECRET,
       },
     ],
   }),
@@ -33,8 +31,6 @@ app.use(
   protectedRoute({
     baseUrl: process.env.BASE_URL as string,
     issuer: process.env.ISSUER,
-    clientId: process.env.CLIENT_ID || '',
-    clientSecret: process.env.CLIENT_SECRET,
   }),
   protectedRoutes,
 );
