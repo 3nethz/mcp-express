@@ -25,7 +25,7 @@ export default function protectedRoute(provider?: McpAuthProvider) {
     res: Response,
     next: NextFunction,
   ): Promise<Response<any, Record<string, any>> | undefined> {
-    const authHeader: string | undefined = req.headers.authorization;
+    const authHeader: string | undefined = req.headers['authorization'] as string;
 
     if (!authHeader) {
       res.setHeader(
@@ -68,6 +68,14 @@ export default function protectedRoute(provider?: McpAuthProvider) {
 
     try {
       await validateAccessToken(token, TOKEN_VALIDATION_CONFIG.jwksUri, TOKEN_VALIDATION_CONFIG.options);
+
+      // Insert authContext into request params when the request is a tool call.
+      if (req?.body?.method === 'tools/call' && req.body.params.arguments) {
+        req.body.params.arguments['authContext'] = {
+          token,
+        };
+      }
+
       next();
       return undefined;
     } catch (error: any) {

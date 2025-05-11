@@ -4,7 +4,7 @@ import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
 import {StreamableHTTPServerTransport} from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import {isInitializeRequest} from '@modelcontextprotocol/sdk/types.js';
 import {z} from 'zod';
-import {McpAuthServer, protectedRoute} from '@brionmario-experimental/mcp-express';
+import {McpAuthServer, protectedRoute, secureTool} from '@brionmario-experimental/mcp-express';
 import {config} from 'dotenv';
 
 config();
@@ -159,6 +159,27 @@ app.post(
               console.error(`Error booking appointment: ${error}`);
               throw new Error(`Failed to book appointment`);
             }
+          },
+        );
+
+        // Example usage of secure tool
+        secureTool(
+          server,
+          'securedVetAppointment',
+          'secured tool that enables authenticated users to book appointments',
+          {
+            name: z.string(),
+            age: z.number().optional(),
+          },
+          async ({name, age, authContext}) => {
+            return {
+              content: [
+                {
+                  type: 'text',
+                  text: `Booked vet appointment for pet ID: ${name} with age ${age} using token ${authContext?.token}`,
+                },
+              ],
+            };
           },
         );
 

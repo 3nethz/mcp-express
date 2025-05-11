@@ -18,3 +18,4 @@
 
 export {default as McpAuthServer} from './routes/auth';
 export {default as protectedRoute} from './middlewares/protected-route';
+export {default as secureTool} from './utils/create-secure-tool';
